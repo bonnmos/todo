@@ -46,7 +46,7 @@
     "changelogDate": "20190425125554",
     "entityTableName": "todo",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "infinite-scroll", 
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
