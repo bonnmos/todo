@@ -20,6 +20,8 @@ import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -35,8 +37,10 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         TodoAccountModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
         TodoEntityModule,
-        TodoAppRoutingModule
+        TodoAppRoutingModule,
+        NgxPaginationModule
     ],
+    exports: [NgxPaginationModule],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
     providers: [
         {

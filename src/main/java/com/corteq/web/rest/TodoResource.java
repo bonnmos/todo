@@ -1,6 +1,9 @@
 package com.corteq.web.rest;
+
 import com.corteq.domain.Todo;
+import com.corteq.domain.User;
 import com.corteq.repository.TodoRepository;
+import com.corteq.repository.UserRepository;
 import com.corteq.web.rest.errors.BadRequestAlertException;
 import com.corteq.web.rest.util.HeaderUtil;
 import com.corteq.web.rest.util.PaginationUtil;
@@ -34,8 +37,14 @@ public class TodoResource {
 
     private final TodoRepository todoRepository;
 
-    public TodoResource(TodoRepository todoRepository) {
+    // The user repository
+    private UserRepository userRepository;
+    private UserDao userDao;
+
+    public TodoResource(TodoRepository todoRepository, UserRepository userRepository, UserDao userDao) {
         this.todoRepository = todoRepository;
+        this.userRepository = userRepository;
+        this.userDao = userDao;
     }
 
     /**
@@ -51,6 +60,16 @@ public class TodoResource {
         if (todo.getId() != null) {
             throw new BadRequestAlertException("A new todo cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        log.debug("ABOUT to save todo");
+        
+        // Automatically asign the currently logged in user to this new todo item.
+        Optional<User> optional = userRepository.findById(userDao.getUserIdByCurrentLogin());
+        
+        optional.ifPresent(user -> {
+            log.debug("this is the id " + user.getId());
+            todo.setUser(user);
+        });
+
         Todo result = todoRepository.save(todo);
         return ResponseEntity.created(new URI("/api/todos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

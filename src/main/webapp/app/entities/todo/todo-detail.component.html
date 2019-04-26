@@ -19,15 +19,16 @@
                 </dd>
                 <dt><span>Due Date</span></dt>
                 <dd>
-                    <span>{{todo.dueDate}}</span>
+                    <span>{{todo.dueDate | date: 'mediumDate'}}</span>
                 </dd>
-                <dt><span>Is Completed</span></dt>
+                <dt><span>Completed??</span></dt>
                 <dd>
-                    <span>{{todo.isCompleted}}</span>
-                </dd>
-                <dt><span>User</span></dt>
-                <dd>
-                    {{todo.user?.login}}
+                    <div *ngIf="todo.isCompleted; else notCompleted">
+                        <span style="color: green;">yes!</span>
+                    </div>
+                    <ng-template #notCompleted>
+                        <span style="color: red;">nope!</span>
+                    </ng-template>
                 </dd>
             </dl>
 

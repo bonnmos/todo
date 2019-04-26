@@ -13,30 +13,30 @@
     <div class="table-responsive" *ngIf="todos">
         <table class="table table-striped">
             <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" >
                     <!--th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
                     <th jhiSortBy="title"><span>Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                    <!--th jhiSortBy="category"><span>Category</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
+                    <th jhiSortBy="category"><span>Category</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                     <!--th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
                     <th jhiSortBy="dueDate"><span>Due Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                    <th jhiSortBy="isCompleted"><span>Is Completed</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                    <th jhiSortBy="isCompleted"><span>Completed?</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                     <!--th jhiSortBy="user.login"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
                     <th></th>
                 </tr> 
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-            <tr *ngFor="let todo of todos ;trackBy: trackId">
-                <!--td><a [routerLink]="['/todo', todo.id, 'view' ]">{{todo.id}}</a></td-->
+            <tr *ngFor="let todo of todos | paginate: { itemsPerPage: 5, currentPage: p }; trackBy: trackId">
+                <!--td><a [routerLink]="['/todo', todo.id, 'view' ]">{{todo.id}}</a></td--> 
                 <td>{{todo.title}}</td>
-                <!--td>{{todo.category}}</td-->
+                <td>{{todo.category}}</td>
                 <!--td>{{todo.description}}</td-->
-                <td>{{todo.dueDate | date:'medium'}}</td>
+                <td>{{todo.dueDate | date:'mediumDate'}}</td>
                 <td>
                     <div *ngIf="todo.isCompleted; else notCompleted">
-                        <fa-icon [icon]="'fa-check'"></fa-icon>&nbsp;yes
+                        <span style="color: green;">yes!</span>
                     </div>
                     <ng-template #notCompleted>
-                        <fa-icon [icon]="'times'"></fa-icon>&nbsp;no
+                        <span style="color: red;">nope!</span>
                     </ng-template>
                 </td>
                 <!--td>
@@ -69,5 +69,11 @@
             </tr>
             </tbody>
         </table>
+        <br>
+        <pagination-controls class="pagination-controls h-100 d-flex d-row justify-content-center align-items-center"
+            (pageChange)="p = $event"
+            previousLabel=""
+            nextLabel="">
+        </pagination-controls>
     </div>
 </div>

@@ -5,16 +5,18 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { ITodo } from 'app/shared/model/todo.model';
 import { TodoService } from './todo.service';
-import { IUser, UserService } from 'app/core';
+import { IUser, UserService, AccountService, Account } from 'app/core';
 
 @Component({
     selector: 'jhi-todo-update',
     templateUrl: './todo-update.component.html'
 })
 export class TodoUpdateComponent implements OnInit {
+    account: Account;
+
     todo: ITodo;
     isSaving: boolean;
 
@@ -22,13 +24,20 @@ export class TodoUpdateComponent implements OnInit {
     dueDate: string;
 
     constructor(
+        private eventManager: JhiEventManager,
         protected jhiAlertService: JhiAlertService,
+        private accountService: AccountService,
         protected todoService: TodoService,
         protected userService: UserService,
         protected activatedRoute: ActivatedRoute
     ) {}
 
     ngOnInit() {
+        this.accountService.identity().then((account: Account) => {
+            this.account = account;
+        });
+        this.registerAuthenticationSuccess();
+
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ todo }) => {
             this.todo = todo;
@@ -41,6 +50,14 @@ export class TodoUpdateComponent implements OnInit {
                 map((response: HttpResponse<IUser[]>) => response.body)
             )
             .subscribe((res: IUser[]) => (this.users = res), (res: HttpErrorResponse) => this.onError(res.message));
+    }
+
+    registerAuthenticationSuccess() {
+        this.eventManager.subscribe('authenticationSuccess', message => {
+            this.accountService.identity().then(account => {
+                this.account = account;
+            });
+        });
     }
 
     previousState() {

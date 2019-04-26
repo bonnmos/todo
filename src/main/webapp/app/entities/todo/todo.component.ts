@@ -13,7 +13,8 @@ import { TodoService } from './todo.service';
 
 @Component({
     selector: 'jhi-todo',
-    templateUrl: './todo.component.html'
+    templateUrl: './todo.component.html',
+    styleUrls: ['./todo.component.scss']
 })
 export class TodoComponent implements OnInit, OnDestroy {
     currentAccount: any;

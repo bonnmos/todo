@@ -4,6 +4,7 @@ import com.corteq.TodoApp;
 
 import com.corteq.domain.Todo;
 import com.corteq.repository.TodoRepository;
+import com.corteq.repository.UserRepository;
 import com.corteq.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -60,6 +61,13 @@ public class TodoResourceIntTest {
     @Autowired
     private TodoRepository todoRepository;
 
+    // Our autowired classes
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserDao userDao;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -82,7 +90,7 @@ public class TodoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TodoResource todoResource = new TodoResource(todoRepository);
+        final TodoResource todoResource = new TodoResource(todoRepository, userRepository, userDao);
         this.restTodoMockMvc = MockMvcBuilders.standaloneSetup(todoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
