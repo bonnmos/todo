@@ -4,6 +4,14 @@ import { RouterModule } from '@angular/router';
 @NgModule({
     imports: [
         RouterModule.forChild([
+            {
+                path: 'todo',
+                loadChildren: './todo/todo.module#TodoTodoModule'
+            },
+            {
+                path: 'todo',
+                loadChildren: './todo/todo.module#TodoTodoModule'
+            }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])
     ],

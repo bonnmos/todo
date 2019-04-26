@@ -1,0 +1,73 @@
+<div>
+    <h2 id="page-heading">
+        <span>Todos</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-todo" [routerLink]="['/todo/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Todo
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="todos">
+        <table class="table table-striped">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                    <!--th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
+                    <th jhiSortBy="title"><span>Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                    <!--th jhiSortBy="category"><span>Category</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
+                    <!--th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
+                    <th jhiSortBy="dueDate"><span>Due Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                    <th jhiSortBy="isCompleted"><span>Is Completed</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                    <!--th jhiSortBy="user.login"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
+                    <th></th>
+                </tr> 
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let todo of todos ;trackBy: trackId">
+                <!--td><a [routerLink]="['/todo', todo.id, 'view' ]">{{todo.id}}</a></td-->
+                <td>{{todo.title}}</td>
+                <!--td>{{todo.category}}</td-->
+                <!--td>{{todo.description}}</td-->
+                <td>{{todo.dueDate | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="todo.isCompleted; else notCompleted">
+                        <fa-icon [icon]="'fa-check'"></fa-icon>&nbsp;yes
+                    </div>
+                    <ng-template #notCompleted>
+                        <fa-icon [icon]="'times'"></fa-icon>&nbsp;no
+                    </ng-template>
+                </td>
+                <!--td>
+                    {{todo.user?.login}}
+                </td-->
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit" title="View"
+                                [routerLink]="['/todo', todo.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline"></span>
+                        </button>&emsp;
+                        <button type="submit" title="Edit"
+                                [routerLink]="['/todo', todo.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline"></span>
+                        </button>&emsp;
+                        <button type="submit" title="Delete"
+                                [routerLink]="['/', 'todo', { outlets: { popup: todo.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
