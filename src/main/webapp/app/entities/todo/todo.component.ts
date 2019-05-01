@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -11,10 +11,13 @@ import { AccountService } from 'app/core';
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { TodoService } from './todo.service';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
     selector: 'jhi-todo',
     templateUrl: './todo.component.html',
-    styleUrls: ['./todo.component.scss']
+    styleUrls: ['./todo.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class TodoComponent implements OnInit, OnDestroy {
     currentAccount: any;
@@ -38,7 +41,8 @@ export class TodoComponent implements OnInit, OnDestroy {
         protected accountService: AccountService,
         protected activatedRoute: ActivatedRoute,
         protected router: Router,
-        protected eventManager: JhiEventManager
+        protected eventManager: JhiEventManager,
+        private modalService: NgbModal
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -128,5 +132,10 @@ export class TodoComponent implements OnInit, OnDestroy {
 
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    // Open the modal
+    openModal(content: String) {
+        this.modalService.open(content, { centered: true });
     }
 }
