@@ -19,7 +19,7 @@ const ENTITY_STATES = [...todoRoute, ...todoPopupRoute];
 @NgModule({
     imports: [TodoSharedModule, RouterModule.forChild(ENTITY_STATES), NgxPaginationModule],
     declarations: [TodoComponent, TodoDetailComponent, TodoUpdateComponent, TodoDeleteDialogComponent, TodoDeletePopupComponent],
-    entryComponents: [TodoComponent, TodoUpdateComponent, TodoDeleteDialogComponent, TodoDeletePopupComponent],
+    entryComponents: [TodoComponent, TodoUpdateComponent, TodoDeleteDialogComponent, TodoDeletePopupComponent, TodoDetailComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TodoTodoModule {}

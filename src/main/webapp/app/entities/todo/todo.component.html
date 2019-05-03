@@ -17,45 +17,55 @@
                     <!--th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
                     <th jhiSortBy="title"><span>Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                     <th jhiSortBy="category"><span>Category</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                    <!--th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
+                    <!--th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                     <th jhiSortBy="dueDate"><span>Due Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                     <th jhiSortBy="isCompleted"><span>Completed?</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                    <!--th jhiSortBy="user.login"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
+                    <th jhiSortBy="user.login"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
                     <th></th>
                 </tr> 
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let todo of todos | paginate: { itemsPerPage: 5, currentPage: p }; trackBy: trackId">
                 <!--td><a [routerLink]="['/todo', todo.id, 'view' ]">{{todo.id}}</a></td--> 
-                <td>{{todo.title}}</td>
-                <td>{{todo.category}}</td>
-                <!--td>{{todo.description}}</td-->
+                <td (click)="openModal(todo)">{{todo.title}}</td>
+                <td (click)="openModal(todo)">{{todo.category}}</td>
+                <!--td>{{todo.description}}</td>
                 <td>{{todo.dueDate | date:'mediumDate'}}</td>
-                <td>
+                <td--
                     <div *ngIf="todo.isCompleted; else notCompleted">
                         <span style="color: green;">yes!</span>
                     </div>
                     <ng-template #notCompleted>
                         <span style="color: red;">nope!</span>
                     </ng-template>
-                </td>
-                <!--td>
-                    {{todo.user?.login}}
                 </td-->
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit" title="View"
+                        <!--  
+                            <button type="submit" title="View"
                                 [routerLink]="['/todo', todo.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline"></span>
                         </button>&emsp;
+                        -->
+
+                        <!--
+                            <button type="submit" title="View"
+                                    (click)="openModal(todo)"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon [icon]="'eye'"></fa-icon>
+                                <span class="d-none d-md-inline"></span>
+                            </button>&emsp;
+                        -->
+
                         <button type="submit" title="Edit"
                                 [routerLink]="['/todo', todo.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline"></span>
                         </button>&emsp;
+
                         <button type="submit" title="Delete"
                                 [routerLink]="['/', 'todo', { outlets: { popup: todo.id + '/delete'} }]"
                                 replaceUrl="true"

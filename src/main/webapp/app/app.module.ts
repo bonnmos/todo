@@ -42,8 +42,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         NgxPaginationModule,
         NgbModule
     ],
+
     exports: [NgxPaginationModule, NgbModule],
+
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
+
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

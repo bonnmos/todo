@@ -5,13 +5,14 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { ITodo } from 'app/shared/model/todo.model';
+import { ITodo, Todo } from 'app/shared/model/todo.model';
 import { AccountService } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { TodoService } from './todo.service';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TodoDetailComponent } from './todo-detail.component';
 
 @Component({
     selector: 'jhi-todo',
@@ -135,7 +136,10 @@ export class TodoComponent implements OnInit, OnDestroy {
     }
 
     // Open the modal
-    openModal(content: String) {
-        this.modalService.open(content, { centered: true });
+    openModal(todo: Todo) {
+        const modalRef = this.modalService.open(TodoDetailComponent, { centered: true });
+
+        modalRef.componentInstance.todo = todo;
+        modalRef.componentInstance.modalService = this.modalService;
     }
 }
