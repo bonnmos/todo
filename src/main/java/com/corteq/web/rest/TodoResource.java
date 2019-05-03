@@ -125,6 +125,18 @@ public class TodoResource {
     }
 
     /**
+     * 
+     * @param category
+     * @return 
+     */
+    @GetMapping("todos/{category}")
+    public ResponseEntity<List<Todo>> getTodo(@PathVariable String category) {
+        log.debug("REST request to get Todo : {}", category);
+        Optional<List<Todo>> todos = todoRepository.findByCategory(category);
+        return ResponseUtil.wrapOrNotFound(todos);
+    }
+
+    /**
      * DELETE  /todos/:id : delete the "id" todo.
      *
      * @param id the id of the todo to delete
