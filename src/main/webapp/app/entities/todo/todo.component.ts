@@ -34,6 +34,7 @@ export class TodoComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    category: any;
 
     constructor(
         protected todoService: TodoService,
@@ -65,6 +66,16 @@ export class TodoComponent implements OnInit, OnDestroy {
                 (res: HttpResponse<ITodo[]>) => this.paginateTodos(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+    }
+
+    findByCategory() {
+        this.todoService.findByCategory(this.category).subscribe(
+            (res: HttpResponse<ITodo[]>) => {
+                this.paginateTodos(res.body, res.headers);
+                this.category = '';
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
     }
 
     loadPage(page: number) {

@@ -38,6 +38,12 @@ export class TodoService {
             .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
+    findByCategory(category: string): Observable<EntityArrayResponseType> {
+        return this.http
+            .get<ITodo[]>(`${this.resourceUrl}/cat/${category}`, { observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+    }
+
     query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
         return this.http

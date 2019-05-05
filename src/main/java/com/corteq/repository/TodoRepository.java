@@ -1,6 +1,9 @@
 package com.corteq.repository;
 
 import com.corteq.domain.Todo;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
@@ -18,5 +21,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("select todo from Todo todo where todo.user.login = ?#{principal.username}")
     List<Todo> findByUserIsCurrentUser();
 
-    Optional<List<Todo>> findByCategory(String category);
+    // @Query("select todo from Todo todo where todo.category = ?1")
+    Page<Todo> findByCategory(String category, Pageable pageable);
 }
