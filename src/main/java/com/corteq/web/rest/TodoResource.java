@@ -125,6 +125,19 @@ public class TodoResource {
     }
 
     /**
+     * 
+     * @param category
+     * @return 
+     */
+    @GetMapping("/todos/cat/{category}")
+    public ResponseEntity<List<Todo>> getTodo(@PathVariable String category, Pageable pageable) {
+        log.debug("REST request to find Todo by category : {}", category);
+        Page<Todo> page = todoRepository.findByCategory(category, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/todos/cat");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
      * DELETE  /todos/:id : delete the "id" todo.
      *
      * @param id the id of the todo to delete
